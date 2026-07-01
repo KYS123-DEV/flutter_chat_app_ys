@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
-import 'screens/home_screen.dart';
-import 'screens/login_screen.dart';
 import 'screens/splash_screen.dart';
 
 void main() async {
@@ -55,19 +52,7 @@ class MainApp extends StatelessWidget {
         );
       },
 
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          //인프라 연동 중에는 splash 화면 노출
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SplashScreen();
-          }
-          if (snapshot.hasData && snapshot.data != null) {
-            return const HomeScreen();
-          }
-          return const LoginScreen();
-        },
-      ),
+      home: const SplashScreen(),
     );
   }
 }
