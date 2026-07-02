@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 16),
                     ],
                     const SizedBox(height: 8),
-                    
+
                     // 로딩 상태에 따른 버튼 조건부 렌더링
                     SizedBox(
                       height: 50,
@@ -87,7 +87,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           : ElevatedButton(
                               onPressed: () => _viewModel.submit(
                                 onSuccess: () {
-                                  // 인증 성공 시 수행할 뷰 레이어의 연출 (예시 구조)
+                                  if (!mounted) return;
+                                  ('로그인 성공!');
                                 },
                                 onError: (errorMessage) {
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -102,7 +103,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextButton(
                       onPressed: _viewModel.toggleMode, // 뷰모델로 상태 제어 위임
                       child: Text(
-                        _viewModel.isSignUp ? '이미 계정이 있으신가요? 로그인' : '계정이 없으신가요? 회원가입',
+                        _viewModel.isSignUp
+                            ? '이미 계정이 있으신가요? 로그인'
+                            : '계정이 없으신가요? 회원가입',
                       ),
                     ),
                   ],

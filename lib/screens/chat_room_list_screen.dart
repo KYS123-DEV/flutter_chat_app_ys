@@ -15,9 +15,7 @@ class _ChatRoomListScreenState extends State<ChatRoomListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('진행 중인 대화방'),
-      ),
+      appBar: AppBar(title: const Text('진행 중인 대화방')),
       body: StreamBuilder<List<Map<String, dynamic>>>(
         stream: _viewModel.chatRoomsStream,
         builder: (context, snapshot) {
@@ -37,7 +35,7 @@ class _ChatRoomListScreenState extends State<ChatRoomListScreen> {
               final String roomId = room['roomId'] ?? '';
               final String roomName = room['roomName'] ?? '그룹채팅';
               final String lastMessage = room['lastMessage'] ?? '대화 내용 없음';
-              
+
               final int myUnreadCount = _viewModel.getUnreadCount(room);
 
               return ListTile(
@@ -55,28 +53,30 @@ class _ChatRoomListScreenState extends State<ChatRoomListScreen> {
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(color: Colors.grey),
                 ),
-                trailing: myUnreadCount > 0 
-                  ? Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Text(
-                        myUnreadCount > 99 ? '99+' : myUnreadCount.toString(),
-                        style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  : const Icon(Icons.chevron_right),
+                trailing: myUnreadCount > 0
+                    ? Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text(
+                          myUnreadCount > 99 ? '99+' : myUnreadCount.toString(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    : const Icon(Icons.chevron_right),
                 onTap: () {
-                  // 🚀 [수정]: ChatScreen 호출 시 roomName을 명시적으로 전달합니다.
+                  // ChatScreen 호출 시 roomName을 명시적으로 전달합니다.
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ChatScreen(
-                        roomId: roomId, 
-                        roomName: roomName
-                      ),
+                      builder: (context) =>
+                          ChatScreen(roomId: roomId, roomName: roomName),
                     ),
                   );
                 },

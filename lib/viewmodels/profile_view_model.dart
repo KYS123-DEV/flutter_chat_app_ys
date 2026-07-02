@@ -6,7 +6,7 @@ import 'base_view_model.dart';
 
 class ProfileViewModel extends BaseViewModel {
   final AuthService _authService = AuthService();
-  
+
   // View에서 사용하던 컨트롤러를 뷰모델로 이전
   final TextEditingController nameController = TextEditingController();
 
@@ -27,11 +27,11 @@ class ProfileViewModel extends BaseViewModel {
   // 2. 핵심 로직: 뷰모델이 직접 DB 스트림을 구독하고 상태를 갱신합니다.
   void _subscribeToProfile() {
     _profileSubscription = _authService.getMyProfileStream().listen((user) {
-      // 🚀 스트림이 처음 들어왔을 때 딱 한 번만 텍스트 컨트롤러에 이름을 세팅합니다. (커서 튐 완벽 방지)
+      // 스트림이 처음 들어왔을 때 딱 한 번만 텍스트 컨트롤러에 이름을 세팅합니다. (커서 튐 완벽 방지)
       if (_userProfile == null) {
         nameController.text = user.name;
       }
-      
+
       _userProfile = user;
       notifyListeners(); // 데이터가 갱신될 때마다 View에 알림
     });
@@ -40,7 +40,7 @@ class ProfileViewModel extends BaseViewModel {
   // 3. 이름 저장 비즈니스 로직
   Future<void> saveName({required VoidCallback onSuccess}) async {
     final newName = nameController.text.trim();
-    
+
     // 변경사항이 없거나 비어있으면 서버 통신 차단 (최적화)
     if (newName.isEmpty || newName == _userProfile?.name) return;
 
@@ -51,7 +51,7 @@ class ProfileViewModel extends BaseViewModel {
 
     _isSaving = false;
     notifyListeners();
-    
+
     onSuccess(); // View에 성공 콜백 전달
   }
 

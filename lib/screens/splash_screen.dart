@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'home_screen.dart';
-import 'login_screen.dart';
+import 'package:flutter_chat_app_ys/screens/auth_gate.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -22,19 +20,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (!mounted) return;
 
-    // 2. Firebase 로그인 상태 확인 후 화면 교체 (pushReplacement)
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
-      );
-    }
+    // 2. Firebase 로그인 상태 확인 후 분기 전문 스크린으로 이동
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const AuthGate()),
+    );
   }
 
   @override

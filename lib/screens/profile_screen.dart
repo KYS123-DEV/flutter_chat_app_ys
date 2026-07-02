@@ -9,7 +9,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // 🚀 뷰모델 생성 및 생명주기 결합
+  // 뷰모델 생성 및 생명주기 결합
   final ProfileViewModel _viewModel = ProfileViewModel();
 
   @override
@@ -22,7 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('내 정보 설정')),
-      // 🚀 단방향 데이터 바인딩: StreamBuilder 대신 ListenableBuilder 사용
+      // 단방향 데이터 바인딩: StreamBuilder 대신 ListenableBuilder 사용
       body: ListenableBuilder(
         listenable: _viewModel,
         builder: (context, _) {
@@ -45,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                
+
                 // 계정 이메일 (읽기 전용)
                 TextField(
                   enabled: false,
@@ -70,33 +70,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     border: OutlineInputBorder(),
                   ),
                 ),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // 저장 버튼
                 SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton.icon(
-                    onPressed: _viewModel.isSaving 
-                      ? null // 저장 중일 때는 버튼 비활성화 (다중 클릭 방어)
-                      : () {
-                          FocusScope.of(context).unfocus(); // 키보드 내리기 (UI 역할)
-                          
-                          // 🚀 비즈니스 로직은 뷰모델에 위임
-                          _viewModel.saveName(
-                            onSuccess: () {
-                              if (mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('프로필이 성공적으로 저장되었습니다.')),
-                                );
-                              }
-                            }
-                          );
-                        },
-                    icon: _viewModel.isSaving 
-                      ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                      : const Icon(Icons.save),
+                    onPressed: _viewModel.isSaving
+                        ? null // 저장 중일 때는 버튼 비활성화 (다중 클릭 방어)
+                        : () {
+                            FocusScope.of(context).unfocus(); // 키보드 내리기 (UI 역할)
+
+                            // 비즈니스 로직은 뷰모델에 위임
+                            _viewModel.saveName(
+                              onSuccess: () {
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('프로필이 성공적으로 저장되었습니다.'),
+                                    ),
+                                  );
+                                }
+                              },
+                            );
+                          },
+                    icon: _viewModel.isSaving
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : const Icon(Icons.save),
                     label: Text(_viewModel.isSaving ? '저장 중...' : '저장'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
@@ -104,9 +113,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 12),
-                
+
                 // 로그아웃 버튼
                 SizedBox(
                   width: double.infinity,
@@ -115,7 +124,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onPressed: () => _viewModel.signOut(), // 뷰모델로 위임
                     icon: const Icon(Icons.logout),
                     label: const Text('로그아웃'),
-                    style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.red,
+                    ),
                   ),
                 ),
               ],

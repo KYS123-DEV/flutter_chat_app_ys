@@ -6,7 +6,6 @@ import 'screens/splash_screen.dart';
 void main() async {
   //플러터 프레임워크 바인딩 초기화
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const MainApp());
