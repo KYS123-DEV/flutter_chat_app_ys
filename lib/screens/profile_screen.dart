@@ -59,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const SizedBox(height: 16),
 
-                // 🚀 이름 수정 필드 (뷰모델의 컨트롤러 바인딩)
+                // 이름 수정 필드 (뷰모델의 컨트롤러 바인딩)
                 TextField(
                   controller: _viewModel.nameController,
                   decoration: const InputDecoration(

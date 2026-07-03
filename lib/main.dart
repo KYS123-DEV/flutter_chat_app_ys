@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'screens/splash_screen.dart';
+import 'routes/app_router.dart';
 
 void main() async {
   //플러터 프레임워크 바인딩 초기화
@@ -16,42 +16,37 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    // .router 생성자
+    return MaterialApp.router(
       title: '기본 채팅 App',
       debugShowCheckedModeBanner: false,
 
-      // 완벽하게 보정된 반응형 글로벌 뷰포트 빌더
+      // go_router 주입
+      routerConfig: AppRouter.router,
+
       builder: (context, child) {
         final mediaQueryData = MediaQuery.of(context);
-
         if (child == null) return const SizedBox.shrink();
 
-        // 브라우저 너비가 600px보다 크면 600px로 고정하고, 작으면 모바일 화면 너비 그대로 사용
         final double targetWidth = mediaQueryData.size.width > 600
             ? 600.0
             : mediaQueryData.size.width;
 
         return Material(
-          color: Colors.grey[300], // 웹 브라우저 좌우 빈 공간에 채워질 배경색
+          color: Colors.grey[300],
           child: Center(
-            // 하위 모든 스크린이 웹 전체 화면이 아닌 '제한된 너비'를 기기 사이즈로 인식하도록 주입
             child: MediaQuery(
               data: mediaQueryData.copyWith(
                 size: Size(targetWidth, mediaQueryData.size.height),
               ),
               child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 600),
-                child: Container(
-                  color: Colors.white, // 앱 본체의 기본 배경색 보장
-                  child: child,
-                ),
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: Container(color: Colors.white, child: child),
               ),
             ),
           ),
         );
       },
-
-      home: const SplashScreen(),
     );
   }
 }

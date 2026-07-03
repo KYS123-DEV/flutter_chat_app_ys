@@ -29,7 +29,7 @@ class ChatModel {
       text: data['text'] ?? '',
       createdAt: time,
       senderId: data['senderId'] ?? '',
-      senderName: data['senderName'] ?? '알 수 없는 사용자', // 🚀 안전장치 추가
+      senderName: data['senderName'] ?? '알 수 없는 사용자',
       senderProfile: data['senderProfile'] ?? '',
     );
   }
@@ -39,8 +39,8 @@ class ChatModel {
       'text': text,
       'createdAt': FieldValue.serverTimestamp(),
       'senderId': senderId,
-      'senderName': senderName,       // 🚀 포함하여 저장
-      'senderProfile': senderProfile, // 🚀 포함하여 저장
+      'senderName': senderName,
+      'senderProfile': senderProfile,
     };
   }
 }
