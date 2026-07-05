@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import '../viewmodels/chat_view_model.dart';
-import '../models/chat_model.dart';
+import 'package:flutter_chat_app_ys/viewmodels/chat_view_model.dart';
+import 'package:flutter_chat_app_ys/models/chat_model.dart';
 
 class ChatScreen extends StatefulWidget {
   final String roomId;
   final String roomName;
 
-  const ChatScreen({
-    super.key, 
-    required this.roomId, 
-    required this.roomName,
-  });
+  const ChatScreen({super.key, required this.roomId, required this.roomName});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -37,13 +33,16 @@ class _ChatScreenState extends State<ChatScreen> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text(widget.roomName.isNotEmpty ? widget.roomName : '채팅방'),
-      ), 
+      ),
       body: SafeArea(
         child: Column(
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
                 child: StreamBuilder<List<ChatModel>>(
                   stream: _viewModel.chatStream,
                   builder: (context, snapshot) {
@@ -53,7 +52,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     if (!snapshot.hasData || snapshot.data!.isEmpty) {
                       return const Center(child: Text('첫 메시지를 보내보세요!'));
                     }
-                
+
                     final chats = snapshot.data!;
                     return ListView.builder(
                       reverse: true,
@@ -64,44 +63,72 @@ class _ChatScreenState extends State<ChatScreen> {
 
                         return Container(
                           margin: const EdgeInsets.only(bottom: 12.0),
-                          alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+                          alignment: isMe
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+                            mainAxisAlignment: isMe
+                                ? MainAxisAlignment.end
+                                : MainAxisAlignment.start,
                             children: [
                               if (!isMe) ...[
                                 CircleAvatar(
                                   backgroundColor: Colors.white,
                                   radius: 20,
-                                  child: chat.senderProfile.isNotEmpty 
+                                  child: chat.senderProfile.isNotEmpty
                                       ? ClipRRect(
-                                          borderRadius: BorderRadius.circular(20),
-                                          child: Image.network(chat.senderProfile,
-                                              errorBuilder: (c, e, s) => const Icon(Icons.person)),
-                                        ) 
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                          child: Image.network(
+                                            chat.senderProfile,
+                                            errorBuilder: (c, e, s) =>
+                                                const Icon(Icons.person),
+                                          ),
+                                        )
                                       : const Icon(Icons.person),
                                 ),
                                 const SizedBox(width: 8),
                               ],
                               Column(
-                                crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                                crossAxisAlignment: isMe
+                                    ? CrossAxisAlignment.end
+                                    : CrossAxisAlignment.start,
                                 children: [
                                   if (!isMe) ...[
-                                    Text(chat.senderName, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                                    Text(
+                                      chat.senderName,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
                                     const SizedBox(height: 4),
                                   ],
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 14.0,
+                                      vertical: 10.0,
+                                    ),
                                     decoration: BoxDecoration(
-                                      color: isMe ? Colors.yellow[400] : Colors.white,
+                                      color: isMe
+                                          ? Colors.yellow[400]
+                                          : Colors.white,
                                       borderRadius: BorderRadius.circular(12),
                                     ),
-                                    child: Text(chat.text, style: const TextStyle(fontSize: 16)),
+                                    child: Text(
+                                      chat.text,
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
                                     _viewModel.formatDateTime(chat.createdAt),
-                                    style: const TextStyle(fontSize: 10, color: Colors.grey),
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.grey,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -132,7 +159,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   IconButton(
                     icon: const Icon(Icons.send, color: Colors.blue),
                     onPressed: () {
-                       _viewModel.sendMessage();
+                      _viewModel.sendMessage();
                       if (!mounted) return;
                     },
                   ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../viewmodels/profile_view_model.dart';
+import 'package:flutter_chat_app_ys/viewmodels/profile_view_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

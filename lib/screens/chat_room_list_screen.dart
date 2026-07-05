@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../viewmodels/chat_room_list_view_model.dart';
-import 'chat_screen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_chat_app_ys/routes/app_router.dart';
+import 'package:flutter_chat_app_ys/viewmodels/chat_room_list_view_model.dart';
 
 class ChatRoomListScreen extends StatefulWidget {
   const ChatRoomListScreen({super.key});
@@ -35,7 +36,6 @@ class _ChatRoomListScreenState extends State<ChatRoomListScreen> {
               final String roomId = room['roomId'] ?? '';
               final String roomName = room['roomName'] ?? '그룹채팅';
               final String lastMessage = room['lastMessage'] ?? '대화 내용 없음';
-
               final int myUnreadCount = _viewModel.getUnreadCount(room);
 
               return ListTile(
@@ -71,13 +71,9 @@ class _ChatRoomListScreenState extends State<ChatRoomListScreen> {
                       )
                     : const Icon(Icons.chevron_right),
                 onTap: () {
-                  // ChatScreen 호출 시 roomName을 명시적으로 전달합니다.
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ChatScreen(roomId: roomId, roomName: roomName),
-                    ),
+                  context.pushNamed(
+                    AppRouter.chat,
+                    extra: {'roomId': roomId, 'roomName': roomName},
                   );
                 },
               );

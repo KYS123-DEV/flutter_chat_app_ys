@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_app_ys/screens/auth_gate.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_chat_app_ys/routes/app_router.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -21,10 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (!mounted) return;
 
     // 2. Firebase 로그인 상태 확인 후 분기 전문 스크린으로 이동
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const AuthGate()),
-    );
+    context.goNamed(AppRouter.authGate);
   }
 
   @override

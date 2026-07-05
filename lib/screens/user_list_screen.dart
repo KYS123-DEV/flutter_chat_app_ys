@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../viewmodels/user_list_view_model.dart';
-import 'chat_screen.dart';
+import 'package:flutter_chat_app_ys/viewmodels/user_list_view_model.dart';
+import 'package:flutter_chat_app_ys/routes/app_router.dart';
 
 class UserListScreen extends StatefulWidget {
   const UserListScreen({super.key});
@@ -90,14 +91,12 @@ class _UserListScreenState extends State<UserListScreen> {
 
     // 3. roomId가 있고, 화면이 존재할 때만 내비게이션 실행
     if (roomId != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ChatScreen(
-            roomId: roomId,
-            roomName: roomName.isEmpty ? "채팅방" : roomName,
-          ),
-        ),
+      context.pushNamed(
+        AppRouter.chat,
+        extra: {
+          'roomId': roomId,
+          'roomName': roomName.isEmpty ? "채팅방" : roomName,
+        },
       );
     }
   }
