@@ -5,7 +5,7 @@ class BaseViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
-    _isDisposed = true; // 뷰모델이 파괴될 때 깃발을 꽂습니다.
+    _isDisposed = true; // 뷰모델이 파괴될 때 깃발을 꽂는다.
     super.dispose();
   }
 

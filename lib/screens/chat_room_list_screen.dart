@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_chat_app_ys/routes/app_router.dart';
-import 'package:flutter_chat_app_ys/viewmodels/chat_room_list_view_model.dart';
+import 'package:flutter_chat_app_ys/viewmodels/chat_room_list_viewmodel.dart';
 
 class ChatRoomListScreen extends StatefulWidget {
   const ChatRoomListScreen({super.key});

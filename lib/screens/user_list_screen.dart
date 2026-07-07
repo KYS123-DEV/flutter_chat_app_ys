@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_chat_app_ys/viewmodels/user_list_view_model.dart';
+import 'package:flutter_chat_app_ys/viewmodels/user_list_viewmodel.dart';
 import 'package:flutter_chat_app_ys/routes/app_router.dart';
 
 class UserListScreen extends StatefulWidget {
@@ -24,7 +24,7 @@ class _UserListScreenState extends State<UserListScreen> {
           appBar: AppBar(
             title: const Text('친구 목록'),
             actions: [
-              // 이제 AppBar가 상태를 감지하여 정상적으로 버튼을 표시합니다.
+              // AppBar가 상태를 감지하여 정상적으로 버튼을 표시.
               if (_viewModel.selectedUids.isNotEmpty)
                 IconButton(
                   icon: const Icon(Icons.forum, color: Colors.blue),
@@ -43,7 +43,7 @@ class _UserListScreenState extends State<UserListScreen> {
                 return const Center(child: CircularProgressIndicator());
               }
               if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                return const Center(child: Text('등록된 임직원이 없습니다.'));
+                return const Center(child: Text('등록된 사용자가 없습니다.'));
               }
 
               final users = snapshot.data!.docs;
@@ -83,13 +83,13 @@ class _UserListScreenState extends State<UserListScreen> {
 
   //채팅방 이동 함수
   void _navigateToChat(String roomName) async {
-    // 1. 비동기 작업 실행
+    // 비동기 작업 실행
     String? roomId = await _viewModel.createAndGetRoomId(roomName);
 
-    // 2. 비동기 작업이 끝난 후, 이 위젯이 여전히 화면에 있는지 '반드시' 체크
+    // 비동기 작업이 끝난 후, 이 위젯이 여전히 화면에 있는지 '반드시' 체크
     if (!mounted) return;
 
-    // 3. roomId가 있고, 화면이 존재할 때만 내비게이션 실행
+    // roomId가 있고, 화면이 존재할 때만 내비게이션 실행
     if (roomId != null) {
       context.pushNamed(
         AppRouter.chat,

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatModel {
+  final String? id;
   final String text;
   final DateTime createdAt;
   final String senderId;
@@ -8,6 +9,7 @@ class ChatModel {
   final String senderProfile;
 
   ChatModel({
+    this.id,
     required this.text,
     required this.createdAt,
     required this.senderId,
@@ -26,6 +28,7 @@ class ChatModel {
     }
 
     return ChatModel(
+      id: doc.id,
       text: data['text'] ?? '',
       createdAt: time,
       senderId: data['senderId'] ?? '',
@@ -38,6 +41,18 @@ class ChatModel {
     return {
       'text': text,
       'createdAt': FieldValue.serverTimestamp(),
+      'senderId': senderId,
+      'senderName': senderName,
+      'senderProfile': senderProfile,
+    };
+  }
+
+  // 로컬 가공을 위한 중간 맵 획득용 객체화 게터
+  Map<String, dynamic> toLocalRawMap() {
+    return {
+      'id': id,
+      'text': text,
+      'createdAt': createdAt,
       'senderId': senderId,
       'senderName': senderName,
       'senderProfile': senderProfile,

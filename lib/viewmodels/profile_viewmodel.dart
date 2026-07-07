@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../models/user_model.dart';
-import '../services/auth_service.dart';
-import 'base_view_model.dart';
+import 'package:flutter_chat_app_ys/models/user_model.dart';
+import 'package:flutter_chat_app_ys/services/auth_service.dart';
+import 'base_viewmodel.dart';
 
 class ProfileViewModel extends BaseViewModel {
   final AuthService _authService = AuthService();

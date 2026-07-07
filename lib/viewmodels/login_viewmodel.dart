@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../services/auth_service.dart';
-import 'base_view_model.dart';
+import 'package:flutter_chat_app_ys/services/auth_service.dart';
+import 'base_viewmodel.dart';
 
 // ChangeNotifier를 상속받아 View가 구독할 수 있는 뷰모델을 형성.
 class LoginViewModel extends BaseViewModel {
@@ -10,7 +10,8 @@ class LoginViewModel extends BaseViewModel {
   // 1. 텍스트 컨트롤러를 뷰모델이 소유하여 관리. (View의 무게 절감)
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController passwordConfirmController = TextEditingController();
+  final TextEditingController passwordConfirmController =
+      TextEditingController();
   final TextEditingController nameController = TextEditingController();
 
   // 2. 상태 변수 및 게터
@@ -65,7 +66,7 @@ class LoginViewModel extends BaseViewModel {
       } else {
         await _authService.signIn(email, password);
       }
-      
+
       onSuccess(); // 인증 성공 콜백 실행
     } on FirebaseAuthException catch (e) {
       onError(e.message ?? '인증 오류가 발생했습니다.');

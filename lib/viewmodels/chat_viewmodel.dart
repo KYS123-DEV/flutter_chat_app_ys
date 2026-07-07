@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../services/chat_service.dart';
-import '../models/chat_model.dart';
+import 'package:flutter_chat_app_ys/services/chat_service.dart';
+import 'package:flutter_chat_app_ys/models/chat_model.dart';
 
 class ChatViewModel extends ChangeNotifier {
   final String roomId;
@@ -13,13 +13,16 @@ class ChatViewModel extends ChangeNotifier {
 
   late final Stream<List<ChatModel>> chatStream;
   late final Future<DocumentSnapshot> roomInfoFuture;
-  
+
   String get currentUid => _auth.currentUser!.uid;
 
   ChatViewModel({required this.roomId}) {
     _chatService.resetUnreadCount(roomId);
     chatStream = _chatService.getChatStream(roomId);
-    roomInfoFuture = FirebaseFirestore.instance.collection('chatRooms').doc(roomId).get();
+    roomInfoFuture = FirebaseFirestore.instance
+        .collection('chatRooms')
+        .doc(roomId)
+        .get();
   }
 
   void sendMessage() {
@@ -44,6 +47,7 @@ class ChatViewModel extends ChangeNotifier {
   @override
   void dispose() {
     resetUnread();
+    _chatService.closeChatSession();
     messageController.dispose();
     super.dispose();
   }

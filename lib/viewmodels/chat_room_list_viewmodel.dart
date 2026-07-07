@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../services/chat_service.dart';
+import 'package:flutter_chat_app_ys/services/chat_service.dart';
 
 class ChatRoomListViewModel extends ChangeNotifier {
   final ChatService _chatService = ChatService();
-  
+
   late final Stream<List<Map<String, dynamic>>> chatRoomsStream;
-  
+
   String get currentUid => FirebaseAuth.instance.currentUser!.uid;
 
   ChatRoomListViewModel() {

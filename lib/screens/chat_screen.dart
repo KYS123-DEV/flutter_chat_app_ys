@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_app_ys/viewmodels/chat_view_model.dart';
+import 'package:flutter_chat_app_ys/viewmodels/chat_viewmodel.dart';
 import 'package:flutter_chat_app_ys/models/chat_model.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -46,8 +46,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: StreamBuilder<List<ChatModel>>(
                   stream: _viewModel.chatStream,
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
+                    if (snapshot.connectionState == ConnectionState.waiting &&
+                        !snapshot.hasData) {
                       return const Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text('오류가 발생했습니다: ${snapshot.error}'),
+                      );
                     }
                     if (!snapshot.hasData || snapshot.data!.isEmpty) {
                       return const Center(child: Text('첫 메시지를 보내보세요!'));

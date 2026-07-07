@@ -1,11 +1,20 @@
+import 'dart:io';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'routes/app_router.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:flutter_chat_app_ys/routes/app_router.dart';
 
 void main() async {
   //플러터 프레임워크 바인딩 초기화
   WidgetsFlutterBinding.ensureInitialized();
+
+  // 윈도우/리눅스 환경일 경우 SQLite FFI 초기화 가드 배치
+  if (Platform.isWindows || Platform.isLinux) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const MainApp());

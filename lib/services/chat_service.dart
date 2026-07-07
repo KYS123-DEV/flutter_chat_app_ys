@@ -1,16 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../models/chat_model.dart';
+import 'package:flutter_chat_app_ys/models/chat_model.dart';
+import 'package:flutter_chat_app_ys/repositories/chat_repository.dart';
 
 class ChatService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final ChatRepository _chatRepository = ChatRepository();
 
   // 현재 로그인한 유저 정보 가져오기 게터
   User? get currentUser => _auth.currentUser;
 
   // 그룹 채팅방 생성 로직
-  Future<String> createGroupChatRoom(List<String> receiverUids, String roomName) async {
+  Future<String> createGroupChatRoom(
+    List<String> receiverUids,
+    String roomName,
+  ) async {
     final String currentUid = _auth.currentUser!.uid;
     List<String> allParticipants = [currentUid, ...receiverUids];
     allParticipants.sort();
@@ -28,7 +33,9 @@ class ChatService {
     }
 
     DocumentReference roomRef = _firestore.collection('chatRooms').doc();
-    String finalRoomName = roomName.isEmpty ? "그룹채팅 (${allParticipants.length}명)" : roomName;
+    String finalRoomName = roomName.isEmpty
+        ? "그룹채팅 (${allParticipants.length}명)"
+        : roomName;
     String roomType = allParticipants.length == 2 ? 'single' : 'group';
 
     Map<String, int> unreadCounts = {};
@@ -54,9 +61,12 @@ class ChatService {
     if (text.trim().isEmpty) return;
 
     final String currentUid = _auth.currentUser!.uid;
-    
+
     // 1. 내 프로필 정보 조회
-    DocumentSnapshot myUserDoc = await _firestore.collection('users').doc(currentUid).get();
+    DocumentSnapshot myUserDoc = await _firestore
+        .collection('users')
+        .doc(currentUid)
+        .get();
     String myName = '알 수 없는 사용자';
     String myProfile = '';
 
@@ -65,18 +75,21 @@ class ChatService {
       myName = myData['name'] ?? '이름 없음';
       myProfile = myData['profileUrl'] ?? '';
     }
-    
+
     // 2. UI 대리인 없이, 서비스가 직접 해당 방의 참가자 명단(participants)을 조회합니다.
-    DocumentSnapshot roomDoc = await _firestore.collection('chatRooms').doc(roomId).get();
+    DocumentSnapshot roomDoc = await _firestore
+        .collection('chatRooms')
+        .doc(roomId)
+        .get();
     List<dynamic> participants = [];
     if (roomDoc.exists) {
       Map<String, dynamic> roomData = roomDoc.data() as Map<String, dynamic>;
       participants = roomData['participants'] ?? [];
     }
-    
+
     // 3. 내 정보 패키지를 탑재하여 새 메시지 모델 생성
     final newChat = ChatModel(
-      text: text, 
+      text: text,
       createdAt: DateTime.now(),
       senderId: currentUid,
       senderName: myName,
@@ -117,38 +130,21 @@ class ChatService {
 
   // 채팅방 stream get
   Stream<List<ChatModel>> getChatStream(String roomId) {
-    return _firestore
-        .collection('chatRooms')
-        .doc(roomId)
-        .collection('messages')
-        .orderBy('createdAt', descending: true)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) => ChatModel.fromFirestore(doc)).toList();
-    });
+    return _chatRepository.getChatStream(roomId);
   }
 
   // 참여 중인 대화방 목록 stream get
   Stream<List<Map<String, dynamic>>> getChatRoomsStream() {
     final String currentUid = _auth.currentUser!.uid;
+    return _chatRepository.getChatRoomsStream(currentUid);
+  }
 
-    return _firestore
-        .collection('chatRooms')
-        .where('participants', arrayContains: currentUid)
-        .snapshots()
-        .map((snapshot) {
-      final rooms = snapshot.docs.map((doc) => doc.data()).toList();
+  void closeChatSession() {
+    _chatRepository.clearChatStream();
+  }
 
-      rooms.sort((a, b) {
-        final Timestamp? aTime = a['lastTime'] as Timestamp?;
-        final Timestamp? bTime = b['lastTime'] as Timestamp?;
-        if (aTime == null && bTime == null) return 0;
-        if (aTime == null) return -1; 
-        if (bTime == null) return 1;
-        return bTime.compareTo(aTime);
-      });
-
-      return rooms;
-    });
+  // ChatService가 파괴되거나 닫힐 때 하위 스트림도 함께 닫히도록 라이프사이클을 연동.
+  void disposeRepository() {
+    _chatRepository.disposeAll();
   }
 }
