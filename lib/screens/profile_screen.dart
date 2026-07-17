@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app_ys/viewmodels/profile_viewmodel.dart';
+import 'package:flutter_chat_app_ys/const/colors.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -21,7 +22,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('내 정보 설정')),
+      appBar: AppBar(
+        backgroundColor: secondaryColor,
+        title: const Text('내 정보 설정'),
+      ),
       // 단방향 데이터 바인딩: StreamBuilder 대신 ListenableBuilder 사용
       body: ListenableBuilder(
         listenable: _viewModel,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app_ys/viewmodels/chat_viewmodel.dart';
 import 'package:flutter_chat_app_ys/models/chat_model.dart';
+import 'package:flutter_chat_app_ys/const/colors.dart';
 
 class ChatScreen extends StatefulWidget {
   final String roomId;
@@ -30,8 +31,9 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: backgroundColor,
       appBar: AppBar(
+        backgroundColor: secondaryColor,
         title: Text(widget.roomName.isNotEmpty ? widget.roomName : '채팅방'),
       ),
       body: SafeArea(
@@ -80,7 +82,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             children: [
                               if (!isMe) ...[
                                 CircleAvatar(
-                                  backgroundColor: Colors.white,
+                                  backgroundColor: whiteColor,
                                   radius: 20,
                                   child: chat.senderProfile.isNotEmpty
                                       ? ClipRRect(
@@ -119,8 +121,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                     ),
                                     decoration: BoxDecoration(
                                       color: isMe
-                                          ? Colors.yellow[400]
-                                          : Colors.white,
+                                          ? chatColorForMe
+                                          : chatColorForOthers,
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Text(
@@ -133,7 +135,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                     _viewModel.formatDateTime(chat.createdAt),
                                     style: const TextStyle(
                                       fontSize: 10,
-                                      color: Colors.grey,
+                                      color: chatTimeStampColor,
                                     ),
                                   ),
                                 ],

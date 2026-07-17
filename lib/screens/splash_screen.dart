@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_chat_app_ys/routes/app_router.dart';
+import 'package:flutter_chat_app_ys/const/colors.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -31,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         decoration: const BoxDecoration(
           // 이미지의 바탕색인 #D9F1FD (217, 241, 253)로 통일
-          color: Color.fromRGBO(217, 241, 253, 1.0),
+          color: splashColor,
         ),
         child: Center(
           child: Column(
@@ -39,9 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               Image.asset('assets/logo.png'),
               const SizedBox(height: 20), // 로고와 인디케이터 사이 여백 추가
-              const CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
+              const CircularProgressIndicator(),
             ],
           ),
         ),

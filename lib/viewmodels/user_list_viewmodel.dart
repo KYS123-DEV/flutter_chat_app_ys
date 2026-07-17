@@ -4,11 +4,9 @@ import 'package:flutter_chat_app_ys/services/chat_service.dart';
 import 'package:flutter_chat_app_ys/viewmodels/base_viewmodel.dart';
 
 class UserListViewModel extends BaseViewModel {
-  final AuthService _authService = AuthService();
-  final ChatService _chatService = ChatService();
-
-  // 화면이 그려질 때 1회성으로 사용할 캐싱된 스트림
-  late final Stream<QuerySnapshot> usersStream;
+  late final AuthService _authService;
+  late final ChatService _chatService;
+  late final Stream<QuerySnapshot> usersStream; // 화면이 그려질 때 1회성으로 사용할 캐싱된 스트림
 
   // 체크된 사용자들의 UID를 담아두는 리스트 상태
   final List<String> _selectedUids = [];
@@ -17,8 +15,10 @@ class UserListViewModel extends BaseViewModel {
   // 현재 내 UID (목록에서 나를 숨기기 위해 사용)
   String? get currentUid => _authService.currentUser?.uid;
 
+  // 생성자
   UserListViewModel() {
-    // 기존 화면 initState에 있던 스트림 초기화 로직을 뷰모델 생성자에서 처리.
+    _authService = AuthService();
+    _chatService = ChatService();
     usersStream = FirebaseFirestore.instance.collection('users').snapshots();
   }
 
@@ -42,7 +42,7 @@ class UserListViewModel extends BaseViewModel {
       roomName,
     );
 
-    // 방 생성이 완료되면 선택된 목록을 초기화합.
+    // 방 생성이 완료되면 선택된 목록을 초기화.
     _selectedUids.clear();
     notifyListeners();
 

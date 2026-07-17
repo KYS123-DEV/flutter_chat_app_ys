@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:flutter_chat_app_ys/routes/app_router.dart';
+import 'package:flutter_chat_app_ys/const/colors.dart';
 
 void main() async {
   //플러터 프레임워크 바인딩 초기화
@@ -22,7 +23,6 @@ void main() async {
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     // .router 생성자
@@ -42,7 +42,7 @@ class MainApp extends StatelessWidget {
             : mediaQueryData.size.width;
 
         return Material(
-          color: Colors.grey[300],
+          color: greyColor,
           child: Center(
             child: MediaQuery(
               data: mediaQueryData.copyWith(
@@ -50,7 +50,7 @@ class MainApp extends StatelessWidget {
               ),
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 600),
-                child: Container(color: Colors.white, child: child),
+                child: Container(color: whiteColor, child: child),
               ),
             ),
           ),

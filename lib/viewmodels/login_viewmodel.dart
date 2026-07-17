@@ -7,7 +7,7 @@ import 'base_viewmodel.dart';
 class LoginViewModel extends BaseViewModel {
   final AuthService _authService = AuthService();
 
-  // 1. 텍스트 컨트롤러를 뷰모델이 소유하여 관리. (View의 무게 절감)
+  // 1. 텍스트 컨트롤러를 뷰모델이 소유하여 관리
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController passwordConfirmController =
@@ -17,7 +17,6 @@ class LoginViewModel extends BaseViewModel {
   // 2. 상태 변수 및 게터
   bool _isSignUp = false;
   bool get isSignUp => _isSignUp;
-
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 

@@ -4,12 +4,19 @@ import 'package:flutter_chat_app_ys/models/chat_model.dart';
 import 'package:flutter_chat_app_ys/repositories/chat_repository.dart';
 
 class ChatService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final ChatRepository _chatRepository = ChatRepository();
+  late final FirebaseFirestore _firestore;
+  late final FirebaseAuth _auth;
+  late final ChatRepository _chatRepository;
 
   // 현재 로그인한 유저 정보 가져오기 게터
   User? get currentUser => _auth.currentUser;
+
+  //생성자
+  ChatService() {
+    _firestore = FirebaseFirestore.instance;
+    _auth = FirebaseAuth.instance;
+    _chatRepository = ChatRepository();
+  }
 
   // 그룹 채팅방 생성 로직
   Future<String> createGroupChatRoom(

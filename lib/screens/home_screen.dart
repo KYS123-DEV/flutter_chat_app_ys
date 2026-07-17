@@ -12,13 +12,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0; // 현재 선택된 탭 인덱스
+  final List<Widget> _screens = []; // 탭에 따라 보여줄 화면 목록
 
-  // 탭에 따라 보여줄 화면 목록
-  final List<Widget> _screens = [
-    const UserListScreen(), // 0번 탭: 친구(유저) 목록
-    const ChatRoomListScreen(), // 1번 탭: 최근 대화방 목록
-    const ProfileScreen(), // 2번째 탭 추가 : 내 프로필
-  ];
+  @override
+  void initState() {
+    _screens.add(const UserListScreen()); // 0번 탭: 친구(유저) 목록
+    _screens.add(const ChatRoomListScreen()); // 1번 탭: 최근 대화방 목록
+    _screens.add(const ProfileScreen()); // 2번째 탭 추가 : 내 프로필
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

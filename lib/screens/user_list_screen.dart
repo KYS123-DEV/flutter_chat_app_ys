@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat_app_ys/viewmodels/user_list_viewmodel.dart';
 import 'package:flutter_chat_app_ys/routes/app_router.dart';
+import 'package:flutter_chat_app_ys/const/colors.dart';
 
 class UserListScreen extends StatefulWidget {
   const UserListScreen({super.key});
@@ -12,7 +13,19 @@ class UserListScreen extends StatefulWidget {
 }
 
 class _UserListScreenState extends State<UserListScreen> {
-  final UserListViewModel _viewModel = UserListViewModel();
+  late UserListViewModel _viewModel;
+
+  @override
+  void initState() {
+    _viewModel = UserListViewModel();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _viewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +35,13 @@ class _UserListScreenState extends State<UserListScreen> {
       builder: (context, _) {
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: secondaryColor,
             title: const Text('친구 목록'),
             actions: [
               // AppBar가 상태를 감지하여 정상적으로 버튼을 표시.
               if (_viewModel.selectedUids.isNotEmpty)
                 IconButton(
-                  icon: const Icon(Icons.forum, color: Colors.blue),
+                  icon: const Icon(Icons.forum, color: primaryColor),
                   onPressed: () {
                     _navigateToChat(
                       "그룹채팅 (${_viewModel.selectedUids.length + 1}명)",

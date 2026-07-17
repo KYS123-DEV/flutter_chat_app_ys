@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_chat_app_ys/routes/app_router.dart';
 import 'package:flutter_chat_app_ys/viewmodels/chat_room_list_viewmodel.dart';
+import 'package:flutter_chat_app_ys/const/colors.dart';
 
 class ChatRoomListScreen extends StatefulWidget {
   const ChatRoomListScreen({super.key});
@@ -16,7 +17,10 @@ class _ChatRoomListScreenState extends State<ChatRoomListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('진행 중인 대화방')),
+      appBar: AppBar(
+        backgroundColor: secondaryColor,
+        title: const Text('진행 중인 대화방'),
+      ),
       body: StreamBuilder<List<Map<String, dynamic>>>(
         stream: _viewModel.chatRoomsStream,
         builder: (context, snapshot) {
